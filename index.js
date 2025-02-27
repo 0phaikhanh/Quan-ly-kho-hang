@@ -35,7 +35,6 @@ const connection = mysql.createConnection({
   database: 'demo2',
 });
 
-// Kết nối MySQL
 connection.connect((err) => {
   if (err) {
     console.error('Lỗi kết nối đến MySQL:', err);
