@@ -1,42 +1,84 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { TextField, Button, Box, Typography, Container, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Container, TextField, Button, Typography, Paper, Box } from "@mui/material";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth(); // Sử dụng context để quản lý trạng thái đăng nhập
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // Danh sách tài khoản mặc định
+  const defaultUsers = [
+    { username: "admin", password: "admin123", role: "admin" },
+    { username: "manage", password: "manage123", role: "manage" }
+  ];
 
   const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find((u) => u.username === formData.username && u.password === formData.password);
+    // Lấy danh sách tài khoản từ localStorage
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const allUsers = [...defaultUsers, ...storedUsers];
 
-    if (!user) {
-      setError("Tài khoản hoặc mật khẩu không chính xác");
-      return;
+    // Kiểm tra tài khoản
+    const user = allUsers.find((u) => u.username === username && u.password === password);
+
+    if (user) {
+      login(user); // Lưu user vào context
+
+      // Chuyển hướng dựa vào role
+      if (user.role === "admin") {
+        navigate("/admin"); // Chuyển đến trang admin
+      } else if (user.role === "manage") {
+        navigate("/manage"); // Chuyển đến trang manage
+      } else {
+        navigate("/user"); // Chuyển đến trang user
+      }
+    } else {
+      setError("Tài khoản hoặc mật khẩu không chính xác!");
     }
-
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    alert("Đăng nhập thành công");
-    navigate(`/${user.role}`);
   };
 
   return (
-    <Container maxWidth="sm">
-      <Paper sx={{ p: 3, mt: 5, textAlign: "center" }}>
+    <Container maxWidth="xs">
+      <Box sx={{ mt: 10, p: 4, boxShadow: 3, borderRadius: 2, textAlign: "center", bgcolor: "white" }}>
         <Typography variant="h5" gutterBottom>Đăng nhập</Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <TextField label="Tên tài khoản" name="username" value={formData.username} onChange={handleChange} fullWidth />
-          <TextField label="Mật khẩu" name="password" value={formData.password} onChange={handleChange} type="password" fullWidth />
-          {error && <Typography color="error">{error}</Typography>}
-          <Button variant="contained" color="primary" onClick={handleLogin}>Đăng nhập</Button>
-          <Button color="secondary" onClick={() => navigate("/register")}>Đăng ký</Button>
-        </Box>
-      </Paper>
+
+        {error && <Alert severity="error">{error}</Alert>}
+
+        <TextField
+          label="Tên đăng nhập"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          label="Mật khẩu"
+          type="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <Button 
+          variant="contained" 
+          color="primary" 
+          fullWidth 
+          sx={{ mt: 2 }}
+          onClick={handleLogin}
+        >
+          Đăng nhập
+        </Button>
+        
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Chưa có tài khoản? <a href="/register">Đăng ký</a>
+        </Typography>
+      </Box>
     </Container>
   );
 };
