@@ -29,11 +29,11 @@ const LoginPage = () => {
 
       // Chuyển hướng dựa vào role
       if (user.role === "admin") {
-        navigate("/admin"); // Chuyển đến trang admin
+        navigate("/admin"); 
       } else if (user.role === "manage") {
-        navigate("/manage"); // Chuyển đến trang manage
+        navigate("/manage");
       } else {
-        navigate("/user"); // Chuyển đến trang user
+        navigate("/user"); 
       }
     } else {
       setError("Tài khoản hoặc mật khẩu không chính xác!");
