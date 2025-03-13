@@ -8,7 +8,7 @@ const Sidebar = () => {
 
   const menuItems = {
     admin: [
-      { text: "Quản lý tài khoản", path: "/admin" },
+      { text: "Xem báo cáo", path: "/admin" },
       { text: "Đăng xuất", action: logout }
     ],
     manage: [

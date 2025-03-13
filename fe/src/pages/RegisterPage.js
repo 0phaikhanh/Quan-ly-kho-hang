@@ -44,10 +44,12 @@ const RegisterPage = () => {
           <TextField label="Tên tài khoản" name="username" value={formData.username} onChange={handleChange} fullWidth />
           <TextField label="Email" name="email" value={formData.email} onChange={handleChange} type="email" fullWidth />
           <TextField label="Mật khẩu" name="password" value={formData.password} onChange={handleChange} type="password" fullWidth />
-          <TextField label="Nhập lại mật khẩu" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} type="password" fullWidth />
+          <TextField label="Xác nhận mật khẩu" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} type="password" fullWidth />
           {error && <Typography color="error">{error}</Typography>}
           <Button variant="contained" color="primary" onClick={handleRegister}>Đăng ký</Button>
-          <Button color="secondary" onClick={() => navigate("/login")}>Đăng nhập</Button>
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Đã có tài khoản? <a href="/login">Đăng nhập</a>
+        </Typography>
         </Box>
       </Paper>
     </Container>
