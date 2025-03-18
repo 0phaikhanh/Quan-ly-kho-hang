@@ -29,13 +29,41 @@ app.use('/api/admin', authMiddleware, roleMiddleware(['admin']), (req, res) => {
 // Middleware xử lý lỗi
 app.use(errorMiddleware);
 
-// Định nghĩa route cho /home
+//route 
 app.get('/home', (req, res) => {
   res.send('Welcome to the Home Page!');
 });
 
+//check kho
+app.get('/api/check-stock', (req, res) => {
+  res.json({ message: 'Stock check API is working.' });
+  const query = `
+      SELECT id, name, quantity, min_quantity
+      FROM materials
+      WHERE quantity < min_quantity
+  `;
+
+  db.query(query, (err, results) => {
+      if (err) {
+          return res.status(500).json({ message: 'Loi kiem tra nguyen lieu', error: err });
+      }
+
+      if (results.length > 0) {
+          res.status(200).json({
+              message: 'Nguyen lieu duoi day o muc canh bao.',
+              lowStock: results
+          });
+      } else {
+          res.status(200).json({
+              message: 'Nguyen lieu on dinh.'
+          });
+      }
+  });
+});
+
+
 // Khởi động server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3030;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

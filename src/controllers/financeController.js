@@ -9,12 +9,12 @@ exports.getFinanceReport = async (req, res) => {
                 [db.Sequelize.fn('SUM', db.Sequelize.col('profit')), 'net_profit']
             ],
             where: {
-                type: 'sale'  // Filter by sale transactions
+                type: 'sale'
             }
         });
 
         res.status(200).json({ financeData });
     } catch (err) {
-        res.status(500).json({ message: 'Error fetching financial data', error: err });
+        res.status(500).json({ message: 'Error', error: err });
     }
 };
