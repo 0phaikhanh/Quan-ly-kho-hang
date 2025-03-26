@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Comparison Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart"></canvas>
+  <script>
+    const labels = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July'
+    ];
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: '2020',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: [0, 10, 5, 2, 20, 30, 45],
+      }, {
+        label: '2021',
+        backgroundColor: 'rgb(54, 162, 235)',
+        borderColor: 'rgb(54, 162, 235)',
+        data: [10, 15, 7, 3, 25, 35, 50],
+      }]
+    };
+
+    const config = {
+      type: 'line',
+      data,
+      options: {}
+    };
+
+    var myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+  </script>
+</body>
+</html>

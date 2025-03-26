@@ -1,0 +1,5 @@
+{
+    "apiBaseUrl": "http://localhost:3030/api",
+    "jwtSecret": "your_secret_key"
+  }
+  
